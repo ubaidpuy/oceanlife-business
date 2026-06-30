@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+@layer components {
+    .btn-primary {
+        @apply inline-flex items-center justify-center rounded-xl bg-ocean-primary px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-ocean-primary/25 transition-all duration-300 hover:bg-ocean-dark hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-ocean-primary focus:ring-offset-2;
+    }
+
+    .btn-secondary {
+        @apply inline-flex items-center justify-center rounded-xl bg-ocean-secondary px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-ocean-secondary/25 transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-ocean-secondary focus:ring-offset-2;
+    }
+
+    .btn-outline {
+        @apply inline-flex items-center justify-center rounded-xl border-2 border-ocean-primary px-6 py-3 text-sm font-semibold text-ocean-primary transition-all duration-300 hover:bg-ocean-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-ocean-primary focus:ring-offset-2;
+    }
+
+    .card {
+        @apply rounded-2xl bg-white shadow-lg shadow-gray-200/50 transition-all duration-300 hover:shadow-xl;
+    }
+
+    .input-field {
+        @apply w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 shadow-sm transition-all duration-200 focus:border-ocean-primary focus:outline-none focus:ring-2 focus:ring-ocean-primary/20;
+    }
+
+    .section-title {
+        @apply text-3xl font-bold text-gray-900 md:text-4xl;
+    }
+
+    .badge {
+        @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold;
+    }
+}
+
+@layer utilities {
+    .dark body {
+        @apply bg-gray-900 text-gray-100;
+    }
+
+    .dark .card {
+        @apply bg-gray-800 shadow-gray-900/50;
+    }
+
+    .dark .input-field {
+        @apply border-gray-700 bg-gray-800 text-gray-100;
+    }
+
+    .dark .section-title {
+        @apply text-white;
+    }
+}
