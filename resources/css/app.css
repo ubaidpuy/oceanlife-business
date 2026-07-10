@@ -58,4 +58,227 @@
     .dark .section-title {
         @apply text-white;
     }
+
+    .footer-aquarium {
+        isolation: isolate;
+    }
+
+    .footer-water {
+        background:
+            radial-gradient(circle at 16% 18%, rgba(125, 211, 252, 0.18), transparent 24%),
+            radial-gradient(circle at 82% 24%, rgba(45, 212, 191, 0.16), transparent 25%),
+            radial-gradient(circle at 50% 120%, rgba(8, 145, 178, 0.26), transparent 44%),
+            linear-gradient(135deg, #020617 0%, #06334f 46%, #064e5f 100%);
+    }
+
+    .footer-water::before,
+    .footer-water::after {
+        content: "";
+        position: absolute;
+        inset: -40% -10%;
+        background-image:
+            linear-gradient(100deg, transparent 0 47%, rgba(255, 255, 255, 0.08) 50%, transparent 53%),
+            linear-gradient(80deg, transparent 0 44%, rgba(34, 211, 238, 0.06) 48%, transparent 52%);
+        background-size: 180px 100%, 260px 100%;
+        animation: footer-current 22s linear infinite;
+        opacity: 0.38;
+        transform: rotate(-7deg);
+    }
+
+    .footer-water::after {
+        animation-duration: 26s;
+        animation-direction: reverse;
+        opacity: 0.22;
+    }
+
+    .footer-light {
+        top: -18%;
+        width: 20rem;
+        height: 130%;
+        background: linear-gradient(180deg, rgba(186, 230, 253, 0.22), transparent 72%);
+        filter: blur(18px);
+        opacity: 0.42;
+        transform: rotate(13deg);
+        animation: footer-light-drift 12s ease-in-out infinite alternate;
+    }
+
+    .footer-light-1 {
+        left: 8%;
+    }
+
+    .footer-light-2 {
+        right: 16%;
+        width: 16rem;
+        animation-delay: -5s;
+        opacity: 0.28;
+    }
+
+    .footer-bubbles span {
+        position: absolute;
+        bottom: -2rem;
+        width: 0.55rem;
+        height: 0.55rem;
+        border: 1px solid rgba(224, 242, 254, 0.55);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        animation: footer-bubble-rise 13s ease-in infinite;
+    }
+
+    .footer-bubbles span:nth-child(1) {
+        left: 12%;
+        animation-delay: -2s;
+    }
+
+    .footer-bubbles span:nth-child(2) {
+        left: 26%;
+        width: 0.8rem;
+        height: 0.8rem;
+        animation-duration: 17s;
+        animation-delay: -9s;
+    }
+
+    .footer-bubbles span:nth-child(3) {
+        left: 48%;
+        animation-duration: 15s;
+        animation-delay: -5s;
+    }
+
+    .footer-bubbles span:nth-child(4) {
+        left: 67%;
+        width: 0.7rem;
+        height: 0.7rem;
+        animation-duration: 19s;
+        animation-delay: -12s;
+    }
+
+    .footer-bubbles span:nth-child(5) {
+        left: 84%;
+        animation-duration: 14s;
+        animation-delay: -7s;
+    }
+
+    .footer-bubbles span:nth-child(6) {
+        left: 93%;
+        width: 0.45rem;
+        height: 0.45rem;
+        animation-duration: 16s;
+        animation-delay: -4s;
+    }
+
+    .footer-reef {
+        height: 4.5rem;
+        opacity: 0.38;
+        background: linear-gradient(180deg, transparent, rgba(1, 22, 39, 0.9));
+    }
+
+    .footer-coral,
+    .footer-plant {
+        position: absolute;
+        bottom: 0;
+        display: block;
+        transform-origin: bottom center;
+    }
+
+    .footer-coral {
+        width: 3rem;
+        height: 3.4rem;
+        border-radius: 999px 999px 0 0;
+        background:
+            radial-gradient(circle at 30% 34%, rgba(248, 113, 113, 0.9) 0 13%, transparent 14%),
+            radial-gradient(circle at 70% 42%, rgba(251, 146, 60, 0.82) 0 12%, transparent 13%),
+            linear-gradient(180deg, rgba(251, 113, 133, 0.9), rgba(244, 63, 94, 0.18));
+        clip-path: polygon(42% 100%, 42% 55%, 18% 35%, 28% 25%, 48% 43%, 52% 18%, 64% 18%, 61% 46%, 83% 30%, 92% 42%, 62% 65%, 62% 100%);
+    }
+
+    .footer-coral-1 {
+        left: 4%;
+    }
+
+    .footer-coral-2 {
+        right: 8%;
+        height: 4rem;
+        opacity: 0.7;
+    }
+
+    .footer-coral-3 {
+        left: 72%;
+        height: 3.1rem;
+        opacity: 0.55;
+    }
+
+    .footer-plant {
+        width: 1.2rem;
+        height: 4.2rem;
+        border-radius: 100% 0;
+        background: linear-gradient(180deg, rgba(74, 222, 128, 0.72), rgba(20, 184, 166, 0.1));
+        clip-path: polygon(42% 100%, 55% 0, 72% 100%);
+        animation: footer-plant-sway 5.5s ease-in-out infinite alternate;
+    }
+
+    .footer-plant-1 {
+        left: 14%;
+    }
+
+    .footer-plant-2 {
+        right: 20%;
+        height: 4.8rem;
+        animation-delay: -2s;
+    }
+
+    .footer-plant-3 {
+        left: 52%;
+        height: 3.8rem;
+        animation-delay: -3.5s;
+    }
+
+    @keyframes footer-current {
+        from {
+            transform: translateX(-6%) rotate(-7deg);
+        }
+        to {
+            transform: translateX(10%) rotate(-7deg);
+        }
+    }
+
+    @keyframes footer-light-drift {
+        from {
+            transform: translateX(-1.5rem) rotate(11deg);
+        }
+        to {
+            transform: translateX(1.5rem) rotate(15deg);
+        }
+    }
+
+    @keyframes footer-bubble-rise {
+        0% {
+            transform: translate3d(0, 0, 0) scale(0.7);
+            opacity: 0;
+        }
+        12% {
+            opacity: 0.7;
+        }
+        100% {
+            transform: translate3d(1.5rem, -18rem, 0) scale(1.15);
+            opacity: 0;
+        }
+    }
+
+    @keyframes footer-plant-sway {
+        from {
+            transform: skewX(-4deg);
+        }
+        to {
+            transform: skewX(6deg);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .footer-water::before,
+        .footer-water::after,
+        .footer-light,
+        .footer-bubbles span,
+        .footer-plant {
+            animation: none;
+        }
+    }
 }

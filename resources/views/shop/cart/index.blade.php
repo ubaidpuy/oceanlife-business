@@ -52,7 +52,7 @@
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
-                                            ${{ number_format($item['price'], 2) }}
+                                            <x-currency :amount="$item['price']" />
                                         </td>
                                         <td class="px-6 py-4">
                                             <form action="{{ route('shop.cart.update', $product->id) }}" method="POST" class="flex items-center gap-2">
@@ -70,7 +70,7 @@
                                             </form>
                                         </td>
                                         <td class="px-6 py-4 text-sm font-semibold text-ocean-primary">
-                                            ${{ number_format($item['subtotal'], 2) }}
+                                            <x-currency :amount="$item['subtotal']" amount-class="font-semibold text-ocean-primary" />
                                         </td>
                                         <td class="px-6 py-4 text-right">
                                             <form action="{{ route('shop.cart.remove', $product->id) }}" method="POST">
@@ -107,7 +107,7 @@
                                         <a href="{{ route('shop.products.show', $product) }}" class="font-semibold text-gray-900 hover:text-ocean-primary dark:text-white">
                                             {{ $product->name }}
                                         </a>
-                                        <p class="mt-1 text-sm font-medium text-ocean-primary">${{ number_format($item['price'], 2) }}</p>
+                                        <x-currency :amount="$item['price']" class="mt-1" amount-class="text-sm font-medium text-ocean-primary" />
                                     </div>
                                 </div>
                                 <div class="mt-4 flex items-center justify-between">
@@ -131,7 +131,7 @@
                                     </form>
                                 </div>
                                 <p class="mt-2 text-right text-sm font-semibold text-gray-900 dark:text-white">
-                                    Subtotal: ${{ number_format($item['subtotal'], 2) }}
+                                    Subtotal: {{ \App\Support\Currency::format($item['subtotal']) }}
                                 </p>
                             </div>
                         @endforeach
@@ -151,16 +151,16 @@
                         <dl class="space-y-4">
                             <div class="flex justify-between text-sm">
                                 <dt class="text-gray-600 dark:text-gray-300">Subtotal</dt>
-                                <dd class="font-medium text-gray-900 dark:text-white">${{ number_format($subtotal, 2) }}</dd>
+                                <dd><x-currency :amount="$subtotal" class="items-end" /></dd>
                             </div>
                             <div class="flex justify-between text-sm">
                                 <dt class="text-gray-600 dark:text-gray-300">Shipping</dt>
-                                <dd class="font-medium text-gray-900 dark:text-white">${{ number_format($shippingTotal, 2) }}</dd>
+                                <dd><x-currency :amount="$shippingTotal" class="items-end" /></dd>
                             </div>
                             <div class="border-t border-gray-200 pt-4 dark:border-gray-700">
                                 <div class="flex justify-between">
                                     <dt class="text-base font-semibold text-gray-900 dark:text-white">Grand Total</dt>
-                                    <dd class="text-xl font-bold text-ocean-primary">${{ number_format($grandTotal, 2) }}</dd>
+                                    <dd><x-currency :amount="$grandTotal" class="items-end" amount-class="text-xl font-bold text-ocean-primary" /></dd>
                                 </div>
                             </div>
                         </dl>

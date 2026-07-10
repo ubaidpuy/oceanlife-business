@@ -63,6 +63,11 @@ class Product extends Model
         return $this->hasMany(ProductImage::class)->orderBy('sort_order');
     }
 
+    public function orderItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     public function primaryImage(): HasMany
     {
         return $this->hasMany(ProductImage::class)->where('is_primary', true);
@@ -96,5 +101,30 @@ class Product extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    /**
+     * Convert the product into an Algolia record.
+     */
+    public function toAlgoliaArray(): array
+    {
+        $primaryImage = $this->images->firstWhere('is_primary', true)
+            ?? $this->images->first();
+
+        return [
+            'objectID' => (string) $this->id,
+            'name' => $this->name,
+            'slug' => $this->slug,
+            'description' => $this->description,
+            'price' => (float) $this->price,
+            'discount_price' => $this->discount_price ? (float) $this->discount_price : null,
+            'stock' => (int) $this->stock,
+            'featured' => (bool) $this->featured,
+            'status' => (bool) $this->status,
+            'category_id' => $this->category_id,
+            'category_name' => $this->category?->name,
+            'image' => $primaryImage?->path,
+            'type' => 'product',
+        ];
     }
 }

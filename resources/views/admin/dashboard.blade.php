@@ -54,7 +54,7 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 font-medium text-gray-900">{{ $order->order_number }}</td>
                             <td class="px-6 py-4 text-gray-600">{{ $order->customer_name }}</td>
-                            <td class="px-6 py-4 text-gray-900">${{ number_format($order->grand_total, 2) }}</td>
+                            <td class="px-6 py-4 text-gray-900"><x-currency :amount="$order->grand_total" /></td>
                             <td class="px-6 py-4">
                                 @php
                                     $colorMap = [

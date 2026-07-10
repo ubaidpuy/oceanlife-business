@@ -78,9 +78,9 @@
                             <li class="flex items-center justify-between text-sm">
                                 <div>
                                     <p class="font-medium text-gray-900 dark:text-white">{{ $item->product_name }}</p>
-                                    <p class="text-gray-500">Qty: {{ $item->quantity }} &times; ${{ number_format($item->price, 2) }}</p>
+                                    <p class="text-gray-500">Qty: {{ $item->quantity }} &times; {{ \App\Support\Currency::format($item->price) }}</p>
                                 </div>
-                                <span class="font-medium text-gray-900 dark:text-white">${{ number_format($item->subtotal, 2) }}</span>
+                                <x-currency :amount="$item->subtotal" class="items-end" />
                             </li>
                         @endforeach
                     </ul>
@@ -88,15 +88,15 @@
                     <dl class="mt-6 space-y-2 border-t border-gray-200 pt-4 text-sm dark:border-gray-700">
                         <div class="flex justify-between">
                             <dt class="text-gray-600 dark:text-gray-300">Subtotal</dt>
-                            <dd class="font-medium text-gray-900 dark:text-white">${{ number_format($order->subtotal, 2) }}</dd>
+                            <dd><x-currency :amount="$order->subtotal" class="items-end" /></dd>
                         </div>
                         <div class="flex justify-between">
                             <dt class="text-gray-600 dark:text-gray-300">Shipping</dt>
-                            <dd class="font-medium text-gray-900 dark:text-white">${{ number_format($order->shipping_total, 2) }}</dd>
+                            <dd><x-currency :amount="$order->shipping_total" class="items-end" /></dd>
                         </div>
                         <div class="flex justify-between border-t border-gray-200 pt-2 dark:border-gray-700">
                             <dt class="font-semibold text-gray-900 dark:text-white">Grand Total</dt>
-                            <dd class="text-lg font-bold text-ocean-primary">${{ number_format($order->grand_total, 2) }}</dd>
+                            <dd><x-currency :amount="$order->grand_total" class="items-end" amount-class="text-lg font-bold text-ocean-primary" /></dd>
                         </div>
                     </dl>
                 </div>

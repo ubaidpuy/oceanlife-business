@@ -62,4 +62,19 @@ class Category extends Model
     {
         return 'slug';
     }
+
+    /**
+     * Convert the category into an Algolia record.
+     */
+    public function toAlgoliaArray(): array
+    {
+        return [
+            'objectID' => (string) $this->id,
+            'name' => $this->name,
+            'slug' => $this->slug,
+            'image' => $this->image,
+            'status' => (bool) $this->status,
+            'type' => 'category',
+        ];
+    }
 }

@@ -11,10 +11,21 @@ class HomeController extends Controller
 {
     public function index(): View
     {
+        $featuredProducts = Product::active()->featured()->with(['images', 'category'])->take(8)->get();
+
         return view('shop.home', [
-            'featuredCategories' => Category::active()->withCount('products')->take(8)->get(),
-            'featuredProducts' => Product::active()->featured()->with(['images', 'category'])->take(8)->get(),
-            'latestProducts' => Product::active()->with(['images', 'category'])->latest()->take(8)->get(),
+            'featuredCategories' => Category::active()
+                ->with(['products' => fn ($query) => $query->active()->with('images')->latest()->take(1)])
+                ->withCount('products')
+                ->take(8)
+                ->get(),
+            'featuredProducts' => $featuredProducts,
+            'latestProducts' => Product::active()
+                ->whereNotIn('id', $featuredProducts->pluck('id'))
+                ->with(['images', 'category'])
+                ->latest()
+                ->take(8)
+                ->get(),
         ]);
     }
 }

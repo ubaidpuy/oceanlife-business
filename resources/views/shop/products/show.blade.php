@@ -91,12 +91,12 @@
 
                 <div class="mt-6 flex flex-wrap items-center gap-4">
                     @if($product->has_discount)
-                        <span class="text-3xl font-bold text-ocean-primary">${{ number_format($product->discount_price, 2) }}</span>
-                        <span class="text-xl text-gray-400 line-through">${{ number_format($product->price, 2) }}</span>
+                        <x-currency :amount="$product->discount_price" amount-class="text-3xl font-bold text-ocean-primary" />
+                        <x-currency :amount="$product->price" amount-class="text-xl text-gray-400 line-through" />
                         @php $savings = $product->price - $product->discount_price; @endphp
-                        <span class="badge bg-red-100 text-red-600">Save ${{ number_format($savings, 2) }}</span>
+                        <span class="badge bg-red-100 text-red-600">Save {{ \App\Support\Currency::format($savings) }}</span>
                     @else
-                        <span class="text-3xl font-bold text-ocean-primary">${{ number_format($product->price, 2) }}</span>
+                        <x-currency :amount="$product->price" amount-class="text-3xl font-bold text-ocean-primary" />
                     @endif
                 </div>
 
@@ -105,7 +105,7 @@
                         <span class="text-gray-600 dark:text-gray-300">Shipping</span>
                         <span class="font-semibold text-gray-900 dark:text-white">
                             @if($product->shipping_charge > 0)
-                                ${{ number_format($product->shipping_charge, 2) }}
+                                <x-currency :amount="$product->shipping_charge" class="items-end" />
                             @else
                                 <span class="text-ocean-secondary">Free</span>
                             @endif

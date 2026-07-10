@@ -26,10 +26,10 @@
             <h3 class="mb-2 font-semibold text-gray-900 transition group-hover:text-ocean-primary dark:text-white">{{ $product->name }}</h3>
             <div class="flex items-center gap-2">
                 @if($product->has_discount)
-                    <span class="text-lg font-bold text-ocean-primary">${{ number_format($product->discount_price, 2) }}</span>
-                    <span class="text-sm text-gray-400 line-through">${{ number_format($product->price, 2) }}</span>
+                    <x-currency :amount="$product->discount_price" amount-class="text-lg font-bold text-ocean-primary" />
+                    <x-currency :amount="$product->price" amount-class="text-sm text-gray-400 line-through" />
                 @else
-                    <span class="text-lg font-bold text-ocean-primary">${{ number_format($product->price, 2) }}</span>
+                    <x-currency :amount="$product->price" amount-class="text-lg font-bold text-ocean-primary" />
                 @endif
             </div>
             @if($product->stock <= 0)

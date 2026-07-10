@@ -16,7 +16,21 @@ class ProductController extends Controller
             ->with(['images', 'category'])
             ->when($request->search, fn ($q, $search) => $q->where('name', 'like', "%{$search}%"))
             ->when($request->category, fn ($q, $slug) => $q->whereHas('category', fn ($c) => $c->where('slug', $slug)))
-            ->latest()
+            ->when($request->filled('min_price'), fn ($q) => $q->whereRaw('COALESCE(discount_price, price) >= ?', [(float) $request->min_price]))
+            ->when($request->filled('max_price'), fn ($q) => $q->whereRaw('COALESCE(discount_price, price) <= ?', [(float) $request->max_price]))
+            ->when(
+                $request->sort === 'price_low',
+                fn ($q) => $q->orderByRaw('COALESCE(discount_price, price) asc'),
+                fn ($q) => $q->when(
+                    $request->sort === 'price_high',
+                    fn ($q) => $q->orderByRaw('COALESCE(discount_price, price) desc'),
+                    fn ($q) => $q->when(
+                        $request->sort === 'popularity',
+                        fn ($q) => $q->withSum('orderItems as sold_quantity', 'quantity')->orderByDesc('sold_quantity')->latest(),
+                        fn ($q) => $q->latest()
+                    )
+                )
+            )
             ->paginate(12)
             ->withQueryString();
 

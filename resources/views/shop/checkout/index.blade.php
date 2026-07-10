@@ -175,7 +175,7 @@
                                     <p class="font-medium text-gray-900 dark:text-white">{{ $product->name }}</p>
                                     <p class="text-gray-500">Qty: {{ $item['quantity'] }}</p>
                                 </div>
-                                <span class="font-medium text-gray-900 dark:text-white">${{ number_format($item['subtotal'], 2) }}</span>
+                                <x-currency :amount="$item['subtotal']" class="items-end" />
                             </li>
                         @endforeach
                     </ul>
@@ -183,15 +183,15 @@
                     <dl class="space-y-3 border-t border-gray-200 pt-4 dark:border-gray-700">
                         <div class="flex justify-between text-sm">
                             <dt class="text-gray-600 dark:text-gray-300">Subtotal</dt>
-                            <dd class="font-medium text-gray-900 dark:text-white">${{ number_format($subtotal, 2) }}</dd>
+                            <dd><x-currency :amount="$subtotal" class="items-end" /></dd>
                         </div>
                         <div class="flex justify-between text-sm">
                             <dt class="text-gray-600 dark:text-gray-300">Shipping</dt>
-                            <dd class="font-medium text-gray-900 dark:text-white">${{ number_format($shippingTotal, 2) }}</dd>
+                            <dd><x-currency :amount="$shippingTotal" class="items-end" /></dd>
                         </div>
                         <div class="flex justify-between border-t border-gray-200 pt-3 dark:border-gray-700">
                             <dt class="font-semibold text-gray-900 dark:text-white">Grand Total</dt>
-                            <dd class="text-xl font-bold text-ocean-primary">${{ number_format($grandTotal, 2) }}</dd>
+                            <dd><x-currency :amount="$grandTotal" class="items-end" amount-class="text-xl font-bold text-ocean-primary" /></dd>
                         </div>
                     </dl>
                 </div>

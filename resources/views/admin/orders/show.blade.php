@@ -60,25 +60,25 @@
                                             <span class="font-medium text-gray-900">{{ $item->product_name }}</span>
                                         </div>
                                     </td>
-                                    <td class="py-4 pr-4 text-gray-600">${{ number_format($item->price, 2) }}</td>
-                                    <td class="py-4 pr-4 text-gray-600">${{ number_format($item->shipping_charge, 2) }}</td>
+                                    <td class="py-4 pr-4 text-gray-600"><x-currency :amount="$item->price" /></td>
+                                    <td class="py-4 pr-4 text-gray-600"><x-currency :amount="$item->shipping_charge" /></td>
                                     <td class="py-4 pr-4 text-gray-600">{{ $item->quantity }}</td>
-                                    <td class="py-4 text-right font-medium text-gray-900">${{ number_format($item->subtotal, 2) }}</td>
+                                    <td class="py-4 text-right font-medium text-gray-900"><x-currency :amount="$item->subtotal" class="items-end" /></td>
                                 </tr>
                             @endforeach
                         </tbody>
                         <tfoot class="border-t border-gray-200">
                             <tr>
                                 <td colspan="4" class="pt-4 text-right text-gray-600">Subtotal</td>
-                                <td class="pt-4 text-right font-medium text-gray-900">${{ number_format($order->subtotal, 2) }}</td>
+                                <td class="pt-4 text-right font-medium text-gray-900"><x-currency :amount="$order->subtotal" class="items-end" /></td>
                             </tr>
                             <tr>
                                 <td colspan="4" class="pt-2 text-right text-gray-600">Shipping</td>
-                                <td class="pt-2 text-right font-medium text-gray-900">${{ number_format($order->shipping_total, 2) }}</td>
+                                <td class="pt-2 text-right font-medium text-gray-900"><x-currency :amount="$order->shipping_total" class="items-end" /></td>
                             </tr>
                             <tr>
                                 <td colspan="4" class="pt-2 text-right text-lg font-semibold text-gray-900">Grand Total</td>
-                                <td class="pt-2 text-right text-lg font-bold text-ocean-primary">${{ number_format($order->grand_total, 2) }}</td>
+                                <td class="pt-2 text-right text-lg font-bold text-ocean-primary"><x-currency :amount="$order->grand_total" class="items-end" amount-class="text-lg font-bold text-ocean-primary" /></td>
                             </tr>
                         </tfoot>
                     </table>

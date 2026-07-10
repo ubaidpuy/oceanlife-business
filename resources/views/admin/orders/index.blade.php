@@ -40,7 +40,7 @@
                                 <p class="text-gray-900">{{ $order->customer_name }}</p>
                                 <p class="text-xs text-gray-500">{{ $order->email }}</p>
                             </td>
-                            <td class="px-6 py-4 font-medium text-gray-900">${{ number_format($order->grand_total, 2) }}</td>
+                            <td class="px-6 py-4 font-medium text-gray-900"><x-currency :amount="$order->grand_total" /></td>
                             <td class="px-6 py-4">
                                 <span class="badge {{ $badgeClass }}">{{ $order->status_label }}</span>
                             </td>

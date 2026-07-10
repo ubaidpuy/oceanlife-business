@@ -64,19 +64,19 @@
                 </div>
 
                 <div>
-                    <label for="price" class="mb-2 block text-sm font-medium text-gray-700">Price <span class="text-red-500">*</span></label>
+                    <label for="price" class="mb-2 block text-sm font-medium text-gray-700">Price (PKR) <span class="text-red-500">*</span></label>
                     <input type="number" name="price" id="price" value="{{ old('price', $product->price) }}" step="0.01" min="0" required class="input-field @error('price') border-red-500 @enderror">
                     @error('price')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
-                    <label for="discount_price" class="mb-2 block text-sm font-medium text-gray-700">Discount Price</label>
+                    <label for="discount_price" class="mb-2 block text-sm font-medium text-gray-700">Discount Price (PKR)</label>
                     <input type="number" name="discount_price" id="discount_price" value="{{ old('discount_price', $product->discount_price) }}" step="0.01" min="0" class="input-field @error('discount_price') border-red-500 @enderror">
                     @error('discount_price')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
-                    <label for="shipping_charge" class="mb-2 block text-sm font-medium text-gray-700">Shipping Charge</label>
+                    <label for="shipping_charge" class="mb-2 block text-sm font-medium text-gray-700">Shipping Charge (PKR)</label>
                     <input type="number" name="shipping_charge" id="shipping_charge" value="{{ old('shipping_charge', $product->shipping_charge) }}" step="0.01" min="0" class="input-field @error('shipping_charge') border-red-500 @enderror">
                     @error('shipping_charge')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                 </div>

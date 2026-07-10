@@ -51,10 +51,10 @@
                                 <td class="px-6 py-4 text-gray-600">{{ $product->category?->name ?? '—' }}</td>
                                 <td class="px-6 py-4">
                                     @if($product->has_discount)
-                                        <span class="font-medium text-gray-900">${{ number_format($product->discount_price, 2) }}</span>
-                                        <span class="ml-1 text-xs text-gray-400 line-through">${{ number_format($product->price, 2) }}</span>
+                                        <x-currency :amount="$product->discount_price" />
+                                        <x-currency :amount="$product->price" class="ml-1" amount-class="text-xs text-gray-400 line-through" />
                                     @else
-                                        <span class="font-medium text-gray-900">${{ number_format($product->price, 2) }}</span>
+                                        <x-currency :amount="$product->price" />
                                     @endif
                                 </td>
                                 <td class="px-6 py-4">

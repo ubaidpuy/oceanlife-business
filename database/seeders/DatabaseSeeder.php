@@ -13,27 +13,28 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        Admin::create([
+        Admin::updateOrCreate([
+            'email' => env('ADMIN_EMAIL', 'admin@oceanlife.test'),
+        ], [
             'name' => 'Shop Owner',
-            'email' => 'admin@oceanlife.com',
-            'password' => 'password',
+            'password' => env('ADMIN_PASSWORD', Str::password(16)),
         ]);
 
-        Setting::create([
+        Setting::updateOrCreate([], [
             'shop_name' => 'Ocean Life',
-            'address' => '123 Ocean Avenue, Coastal City',
-            'phone' => '+1 234 567 8900',
-            'whatsapp' => '+1 234 567 8900',
-            'email' => 'hello@oceanlife.com',
-            'facebook' => 'https://facebook.com/oceanlife',
-            'instagram' => 'https://instagram.com/oceanlife',
-            'about_us' => 'Ocean Life is your premier destination for aquarium supplies, exotic fish, and everything you need to create a thriving underwater world. We are passionate about marine life and committed to helping you build beautiful aquatic ecosystems.',
-            'shipping_policy' => 'We ship nationwide within 3-7 business days. Free shipping on orders over $100. All live fish are shipped with care using temperature-controlled packaging.',
+            'address' => null,
+            'phone' => env('SHOP_PHONE'),
+            'whatsapp' => env('SHOP_WHATSAPP'),
+            'email' => env('SHOP_EMAIL'),
+            'facebook' => env('SHOP_FACEBOOK'),
+            'instagram' => env('SHOP_INSTAGRAM'),
+            'about_us' => 'Ocean Life offers aquarium accessories, food, filters, lighting, plants, and care essentials for pet fish owners who want cleaner, healthier tanks.',
+            'shipping_policy' => 'We ship aquarium accessories and care supplies nationwide within 3-7 business days. Free shipping thresholds and delivery timelines can be configured from the admin settings.',
         ]);
 
         $categories = [
             'Aquariums',
-            'Fish',
+            'Fish Care',
             'Food',
             'Accessories',
             'Lights',
@@ -52,7 +53,7 @@ class DatabaseSeeder extends Seeder
 
         $sampleProducts = [
             ['Glass Aquarium 50L', 'Aquariums', 149.99, 129.99, 15.00, true],
-            ['Betta Splendens - Blue', 'Fish', 12.99, null, 5.00, true],
+            ['Aquarium Starter Care Kit', 'Fish Care', 24.99, null, 5.00, true],
             ['Tropical Fish Flakes 200g', 'Food', 8.99, null, 3.00, false],
             ['Aquarium Gravel - Natural', 'Accessories', 14.99, 11.99, 8.00, false],
             ['LED Aquarium Light 24"', 'Lights', 45.99, null, 6.00, true],
