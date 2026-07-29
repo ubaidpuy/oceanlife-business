@@ -52,12 +52,33 @@ document.querySelectorAll('[data-unified-search]').forEach((form) => {
     let timeoutId;
     let controller;
 
+    // Keep the panel outside the blurred/sticky header so mobile browsers use
+    // the real viewport as its positioning context.
+    document.body.append(results);
+
+    const positionResults = () => {
+        const inputRect = input.getBoundingClientRect();
+        const gutter = 16;
+        const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+        const width = isDesktop
+            ? Math.min(384, window.innerWidth - (gutter * 2))
+            : Math.min(576, window.innerWidth - (gutter * 2));
+        const left = isDesktop
+            ? Math.max(gutter, Math.min(inputRect.right - width, window.innerWidth - width - gutter))
+            : Math.max(gutter, (window.innerWidth - width) / 2);
+
+        results.style.width = `${width}px`;
+        results.style.left = `${left}px`;
+        results.style.top = `${inputRect.bottom + 8}px`;
+    };
+
     const close = () => {
         results.classList.add('hidden');
         input.setAttribute('aria-expanded', 'false');
     };
 
     const open = () => {
+        positionResults();
         results.classList.remove('hidden');
         input.setAttribute('aria-expanded', 'true');
     };
@@ -113,6 +134,12 @@ document.querySelectorAll('[data-unified-search]').forEach((form) => {
     });
 
     document.addEventListener('click', (event) => {
-        if (!form.contains(event.target)) close();
+        if (!form.contains(event.target) && !results.contains(event.target)) close();
     });
+
+    window.addEventListener('resize', () => {
+        if (!results.classList.contains('hidden')) positionResults();
+    });
+
+    window.addEventListener('scroll', close, { passive: true });
 });

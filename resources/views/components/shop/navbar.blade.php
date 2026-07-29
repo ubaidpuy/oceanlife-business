@@ -33,7 +33,7 @@
                         <input type="search" name="search" value="{{ request('search') }}" placeholder="Search..." autocomplete="off" aria-label="Search products and categories" aria-autocomplete="list" aria-expanded="false" class="w-24 rounded-full border border-gray-200 bg-gray-50 py-2 pl-9 pr-3 text-sm focus:border-ocean-primary focus:outline-none focus:ring-2 focus:ring-ocean-primary/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white sm:w-40">
                         <svg class="absolute left-3 top-2.5 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </div>
-                    <div data-search-results role="listbox" class="fixed left-1/2 top-20 z-50 hidden max-h-[45vh] w-[calc(100vw-2rem)] max-w-xl -translate-x-1/2 overflow-y-auto overscroll-contain rounded-2xl border border-gray-100 bg-white p-2 shadow-2xl sm:max-h-[60vh] dark:border-gray-700 dark:bg-gray-800"></div>
+                    <div data-search-results role="listbox" class="fixed z-[100] hidden max-h-[60vh] overflow-y-auto overscroll-contain rounded-2xl border border-gray-100 bg-white p-2 shadow-2xl dark:border-gray-700 dark:bg-gray-800"></div>
                 </form>
 
                 <form action="{{ request()->getBaseUrl() }}/products" method="GET" class="relative hidden lg:block" data-unified-search data-search-url="{{ request()->getBaseUrl() }}/api/search" data-products-url="{{ request()->getBaseUrl() }}/products" data-categories-url="{{ request()->getBaseUrl() }}/categories">
@@ -41,7 +41,7 @@
                         <input type="search" name="search" value="{{ request('search') }}" placeholder="Search products & categories..." autocomplete="off" aria-label="Search products and categories" aria-autocomplete="list" aria-expanded="false" class="w-48 rounded-full border border-gray-200 bg-gray-50 py-2 pl-10 pr-4 text-sm focus:border-ocean-primary focus:outline-none focus:ring-2 focus:ring-ocean-primary/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white xl:w-64">
                         <svg class="absolute left-3 top-2.5 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </div>
-                    <div data-search-results role="listbox" class="fixed left-1/2 top-24 z-50 hidden max-h-[50vh] w-[calc(100vw-2rem)] max-w-xl -translate-x-1/2 overflow-y-auto overscroll-contain rounded-2xl border border-gray-100 bg-white p-2 shadow-2xl sm:max-h-[65vh] dark:border-gray-700 dark:bg-gray-800"></div>
+                    <div data-search-results role="listbox" class="fixed z-[100] hidden max-h-[65vh] overflow-y-auto overscroll-contain rounded-2xl border border-gray-100 bg-white p-2 shadow-2xl dark:border-gray-700 dark:bg-gray-800"></div>
                 </form>
 
                 <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)" type="button" aria-label="Toggle color theme" class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800">
