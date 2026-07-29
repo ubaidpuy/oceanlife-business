@@ -19,6 +19,7 @@ class Setting extends Model
         'email',
         'facebook',
         'instagram',
+        'youtube',
         'about_us',
         'shipping_policy',
     ];

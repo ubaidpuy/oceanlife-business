@@ -22,6 +22,7 @@ class SettingRequest extends FormRequest
             'email' => ['nullable', 'email', 'max:255'],
             'facebook' => ['nullable', 'url', 'max:255'],
             'instagram' => ['nullable', 'url', 'max:255'],
+            'youtube' => ['nullable', 'url', 'max:255'],
             'about_us' => ['nullable', 'string'],
             'shipping_policy' => ['nullable', 'string'],
         ];

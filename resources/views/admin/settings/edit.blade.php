@@ -79,6 +79,12 @@
                     <input type="url" name="instagram" id="instagram" value="{{ old('instagram', $settings->instagram) }}" class="input-field @error('instagram') border-red-500 @enderror" placeholder="https://instagram.com/...">
                     @error('instagram')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                 </div>
+
+                <div>
+                    <label for="youtube" class="mb-2 block text-sm font-medium text-gray-700">YouTube URL</label>
+                    <input type="url" name="youtube" id="youtube" value="{{ old('youtube', $settings->youtube) }}" class="input-field @error('youtube') border-red-500 @enderror" placeholder="https://youtube.com/@...">
+                    @error('youtube')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                </div>
             </div>
 
             <div>
