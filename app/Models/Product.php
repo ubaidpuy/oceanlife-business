@@ -112,7 +112,8 @@ class Product extends Model
             ?? $this->images->first();
 
         return [
-            'objectID' => (string) $this->id,
+            'objectID' => 'product_' . $this->id,
+            'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
@@ -123,7 +124,7 @@ class Product extends Model
             'status' => (bool) $this->status,
             'category_id' => $this->category_id,
             'category_name' => $this->category?->name,
-            'image' => $primaryImage?->path,
+            'image' => $primaryImage?->url,
             'type' => 'product',
         ];
     }

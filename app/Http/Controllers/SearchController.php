@@ -14,31 +14,28 @@ class SearchController extends Controller
     public function search(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'q' => ['required', 'string'],
+            'q' => ['required', 'string', 'min:3', 'max:100'],
             'category_id' => ['nullable', 'integer'],
-            'per_page' => ['nullable', 'integer'],
+            'per_page' => ['nullable', 'integer', 'min:1', 'max:20'],
         ]);
 
         $client = AlgoliaService::client();
-        $productParams = ['hitsPerPage' => $validated['per_page'] ?? 20];
+        $perPage = $validated['per_page'] ?? 8;
+        $params = ['hitsPerPage' => $perPage + 3];
 
         if ($request->filled('category_id')) {
-            $productParams['filters'] = 'category_id:' . $validated['category_id'];
+            $params['filters'] = 'category_id:' . $validated['category_id'];
         }
 
-        $productResults = $client->searchSingleIndex('products', [
-            ...$productParams,
+        $searchResults = $client->searchSingleIndex(AlgoliaService::indexName(), [
+            ...$params,
             'query' => $validated['q'],
         ]);
-        $categoryResults = $client->searchSingleIndex('categories', [
-            'hitsPerPage' => 5,
-            'query' => $validated['q'],
-        ]);
+        $hits = collect($searchResults['hits']);
 
         return response()->json([
-            'products' => $productResults['hits'],
-            'categories' => $categoryResults['hits'],
-            'products_count' => $productResults['nbHits'],
+            'categories' => $hits->where('type', 'category')->take(3)->values(),
+            'products' => $hits->where('type', 'product')->take($perPage)->values(),
         ]);
     }
 }

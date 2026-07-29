@@ -43,6 +43,87 @@
 }
 
 @layer utilities {
+    .ocean-hero {
+        isolation: isolate;
+    }
+
+    .ocean-hero-scene {
+        animation: ocean-camera-drift 24s ease-in-out infinite alternate;
+        will-change: transform;
+    }
+
+    .ocean-hero-caustics {
+        z-index: 2;
+        background:
+            repeating-radial-gradient(ellipse at 72% -15%, transparent 0 34px, rgba(160, 231, 255, 0.09) 37px, transparent 42px),
+            repeating-radial-gradient(ellipse at 88% 4%, transparent 0 48px, rgba(92, 213, 241, 0.07) 51px, transparent 57px);
+        background-size: 170% 80%, 145% 74%;
+        mix-blend-mode: screen;
+        opacity: 0.5;
+        filter: blur(4px);
+        animation: ocean-caustics 13s ease-in-out infinite alternate;
+    }
+
+    .ocean-hero-rays {
+        z-index: 3;
+        inset: -20% -15% 0 42%;
+        background: repeating-linear-gradient(105deg, transparent 0 8%, rgba(163, 230, 255, 0.09) 11%, transparent 15% 23%);
+        filter: blur(14px);
+        transform-origin: top center;
+        animation: ocean-rays 11s ease-in-out infinite alternate;
+    }
+
+    .ocean-hero-bubbles {
+        z-index: 4;
+        overflow: hidden;
+    }
+
+    .ocean-hero-bubbles span {
+        position: absolute;
+        left: var(--bubble-x);
+        bottom: -2rem;
+        width: var(--bubble-size);
+        height: var(--bubble-size);
+        border: 1px solid rgba(207, 244, 255, 0.55);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.12);
+        opacity: 0;
+        animation: ocean-bubble 15s var(--bubble-delay) ease-in infinite;
+    }
+
+    @keyframes ocean-camera-drift {
+        0% { transform: scale(1.08) translate3d(-1.2%, 0.4%, 0); }
+        48% { transform: scale(1.115) translate3d(0.5%, -0.7%, 0); }
+        100% { transform: scale(1.09) translate3d(1.2%, 0.2%, 0); }
+    }
+
+    @keyframes ocean-caustics {
+        from { background-position: 0 0, 12% 2%; transform: scale(1.04) skewX(-1deg); opacity: 0.34; }
+        to { background-position: 8% 5%, 2% -3%; transform: scale(1.1) skewX(1deg); opacity: 0.58; }
+    }
+
+    @keyframes ocean-rays {
+        from { transform: rotate(-3deg) translateX(-2%); opacity: 0.42; }
+        to { transform: rotate(3deg) translateX(3%); opacity: 0.68; }
+    }
+
+    @keyframes ocean-bubble {
+        0% { transform: translate3d(0, 1rem, 0) scale(0.7); opacity: 0; }
+        12% { opacity: 0.65; }
+        55% { transform: translate3d(14px, -48vh, 0) scale(1); }
+        100% { transform: translate3d(-8px, -105vh, 0) scale(1.12); opacity: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .ocean-hero-scene,
+        .ocean-hero-caustics,
+        .ocean-hero-rays,
+        .ocean-hero-bubbles span {
+            animation: none !important;
+        }
+    }
+
     .dark body {
         @apply bg-gray-900 text-gray-100;
     }

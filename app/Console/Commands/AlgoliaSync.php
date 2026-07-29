@@ -12,7 +12,7 @@ class AlgoliaSync extends Command
 {
     protected $signature = 'algolia:sync {model?} {--clear}';
 
-    protected $description = 'Sync products and/or categories to Algolia';
+    protected $description = 'Sync products and categories to the unified Algolia index';
 
     /**
      * Execute the console command.
@@ -28,21 +28,27 @@ class AlgoliaSync extends Command
                 return Command::FAILURE;
             }
 
+            if ($model !== null && $this->option('clear')) {
+                $this->error('The --clear option rebuilds the unified index and cannot be combined with a model.');
+
+                return Command::FAILURE;
+            }
+
             $client = AlgoliaService::client();
 
-            if ($model === null || $model === 'products') {
-                if ($this->option('clear')) {
-                    $client->clearObjects('products');
-                    $this->info('Cleared products index.');
-                }
+            if ($this->option('clear')) {
+                $client->clearObjects(AlgoliaService::indexName());
+                $this->info('Cleared unified index: ' . AlgoliaService::indexName());
+            }
 
+            if ($model === null || $model === 'products') {
                 Product::with(['category', 'images'])
                     ->where('status', true)
                     ->chunk(500, function ($products) use ($client): void {
                         $records = $products->map->toAlgoliaArray()->toArray();
 
                         if ($records !== []) {
-                            $client->saveObjects('products', $records);
+                            $client->saveObjects(AlgoliaService::indexName(), $records);
                         }
                     });
 
@@ -50,17 +56,12 @@ class AlgoliaSync extends Command
             }
 
             if ($model === null || $model === 'categories') {
-                if ($this->option('clear')) {
-                    $client->clearObjects('categories');
-                    $this->info('Cleared categories index.');
-                }
-
                 Category::where('status', true)
                     ->chunk(500, function ($categories) use ($client): void {
                         $records = $categories->map->toAlgoliaArray()->toArray();
 
                         if ($records !== []) {
-                            $client->saveObjects('categories', $records);
+                            $client->saveObjects(AlgoliaService::indexName(), $records);
                         }
                     });
 

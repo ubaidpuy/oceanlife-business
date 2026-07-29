@@ -69,10 +69,11 @@ class Category extends Model
     public function toAlgoliaArray(): array
     {
         return [
-            'objectID' => (string) $this->id,
+            'objectID' => 'category_' . $this->id,
+            'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'image' => $this->image,
+            'image' => $this->image_url,
             'status' => (bool) $this->status,
             'type' => 'category',
         ];

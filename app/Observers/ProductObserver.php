@@ -19,9 +19,9 @@ class ProductObserver
 
             if ($product->status) {
                 $product->loadMissing(['category', 'images']);
-                $client->saveObject('products', $product->toAlgoliaArray());
+                $client->saveObject(AlgoliaService::indexName(), $product->toAlgoliaArray());
             } else {
-                $client->deleteObject('products', (string) $product->id);
+                $client->deleteObject(AlgoliaService::indexName(), 'product_' . $product->id);
             }
         } catch (Throwable $e) {
             Log::error('Algolia product sync failed: ' . $e->getMessage());
@@ -34,7 +34,7 @@ class ProductObserver
     public function deleted(Product $product): void
     {
         try {
-            AlgoliaService::client()->deleteObject('products', (string) $product->id);
+            AlgoliaService::client()->deleteObject(AlgoliaService::indexName(), 'product_' . $product->id);
         } catch (Throwable $e) {
             Log::error('Algolia product sync failed: ' . $e->getMessage());
         }

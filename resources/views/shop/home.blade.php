@@ -10,68 +10,28 @@
             ?? $featuredProducts->firstWhere('images.0')
             ?? $latestProducts->firstWhere('images.0');
         $heroImage = $heroProduct?->images->firstWhere('is_primary', true)?->url ?? $heroProduct?->images->first()?->url;
-        $heroSlides = $featuredProducts
-            ->concat($latestProducts)
-            ->filter(fn ($product) => $product->images->isNotEmpty())
-            ->sortByDesc(fn ($product) => $product->category?->slug === 'fish-care')
-            ->unique('id')
-            ->take(4)
-            ->values();
         $showAddress = $shopSettings->address && ! str_contains(strtolower($shopSettings->address), '123 ocean avenue');
     @endphp
 
-    {{-- Hero --}}
-    <section
-        class="relative min-h-[520px] overflow-hidden bg-black sm:min-h-[600px]"
-        x-data="{
-            active: 0,
-            total: {{ max($heroSlides->count(), 1) }},
-            next() { this.active = (this.active + 1) % this.total },
-            previous() { this.active = (this.active - 1 + this.total) % this.total },
-            go(index) { this.active = index }
-        }"
-        x-init="setInterval(() => next(), 5200)"
-    >
-        @forelse($heroSlides as $index => $slide)
-            @php
-                $slideImage = $slide->images->firstWhere('is_primary', true)?->url ?? $slide->images->first()?->url;
-            @endphp
-            <div
-                class="absolute inset-0 transition-all duration-700 ease-out"
-                x-cloak
-                x-show="active === {{ $index }}"
-                x-transition:enter="transition duration-700 ease-out"
-                x-transition:enter-start="opacity-0 scale-105"
-                x-transition:enter-end="opacity-100 scale-100"
-                x-transition:leave="transition duration-700 ease-in"
-                x-transition:leave-start="opacity-100 scale-100"
-                x-transition:leave-end="opacity-0 scale-95"
-            >
-                <img src="{{ $slideImage }}" alt="{{ $slide->name }}" class="h-full w-full object-cover object-center opacity-90 lg:object-right">
-            </div>
-        @empty
-            @if($heroImage)
-                <img src="{{ $heroImage }}" alt="{{ $heroProduct->name }}" class="absolute inset-0 h-full w-full object-cover object-center opacity-90 lg:object-right">
-            @endif
-        @endforelse
+    {{-- Cinematic underwater hero --}}
+    <section class="ocean-hero relative min-h-[560px] overflow-hidden bg-[#021426] sm:min-h-[680px]" aria-label="Ocean Life aquarium store">
+        <div class="ocean-hero-scene absolute inset-[-4%]" aria-hidden="true">
+            <img src="{{ asset('images/hero/ocean-wildlife.png') }}" alt="" class="h-full w-full object-cover object-[68%_center] sm:object-center">
+        </div>
+        <div class="ocean-hero-caustics absolute inset-0" aria-hidden="true"></div>
+        <div class="ocean-hero-rays absolute inset-0" aria-hidden="true"></div>
+        <div class="ocean-hero-bubbles absolute inset-0" aria-hidden="true">
+            @foreach([8, 17, 29, 43, 58, 72, 84, 93] as $position)
+                <span style="--bubble-x: {{ $position }}%; --bubble-delay: -{{ $loop->index * 2.1 }}s; --bubble-size: {{ 5 + ($loop->index % 4) * 3 }}px"></span>
+            @endforeach
+        </div>
 
-        <div class="absolute inset-0 z-10 bg-[radial-gradient(circle_at_72%_42%,transparent_0,rgba(0,0,0,0.08)_24%,rgba(0,0,0,0.62)_50%,rgba(0,0,0,0.96)_78%)]"></div>
-        <div class="absolute inset-0 z-10 bg-gradient-to-r from-black via-black/78 to-black/12"></div>
-        <div class="absolute inset-0 z-10 bg-gradient-to-t from-black/35 via-transparent to-black/18"></div>
+        <div class="absolute inset-0 z-10 bg-gradient-to-r from-[#010b18]/95 via-[#021426]/72 to-transparent"></div>
+        <div class="absolute inset-0 z-10 bg-gradient-to-t from-[#010b18]/65 via-transparent to-[#03162a]/20"></div>
 
-        <button type="button" aria-label="Previous slide" class="absolute bottom-16 left-3 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-white text-gray-700 shadow-lg transition hover:bg-gray-100 sm:left-5 sm:top-1/2 sm:bottom-auto sm:h-12 sm:w-12 sm:-translate-y-1/2" @click="previous()">
-            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-            </svg>
-        </button>
-        <button type="button" aria-label="Next slide" class="absolute bottom-16 right-3 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-white text-gray-700 shadow-lg transition hover:bg-gray-100 sm:right-5 sm:top-1/2 sm:bottom-auto sm:h-12 sm:w-12 sm:-translate-y-1/2" @click="next()">
-            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-        </button>
-
-        <div class="relative z-20 mx-auto flex min-h-[520px] max-w-7xl items-center px-4 py-20 sm:min-h-[600px] sm:px-6 lg:px-8">
+        <div class="relative z-20 mx-auto flex min-h-[560px] max-w-7xl items-center px-4 py-20 sm:min-h-[680px] sm:px-6 lg:px-8">
             <div class="max-w-2xl">
+                <p class="mb-4 text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300">Explore life below the surface</p>
                 <h1 class="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
                     {{ $shopSettings->shop_name }} - The Aquarium Fish Store
                 </h1>
@@ -85,13 +45,6 @@
                 </div>
             </div>
 
-            <div class="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 gap-2">
-                @forelse($heroSlides as $index => $slide)
-                    <button type="button" class="h-2.5 w-2.5 rounded-full transition" :class="active === {{ $index }} ? 'bg-white scale-110' : 'bg-white/30'" aria-label="Go to slide {{ $index + 1 }}" @click="go({{ $index }})"></button>
-                @empty
-                    <span class="h-2.5 w-2.5 rounded-full bg-white"></span>
-                @endforelse
-            </div>
         </div>
     </section>
 

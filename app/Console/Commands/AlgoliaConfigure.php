@@ -10,7 +10,7 @@ class AlgoliaConfigure extends Command
 {
     protected $signature = 'algolia:configure';
 
-    protected $description = 'Configure Algolia index settings for products and categories';
+    protected $description = 'Configure the unified Algolia storefront index';
 
     /**
      * Execute the console command.
@@ -20,17 +20,12 @@ class AlgoliaConfigure extends Command
         try {
             $client = AlgoliaService::client();
 
-            $client->setSettings('products', [
+            $client->setSettings(AlgoliaService::indexName(), [
                 'searchableAttributes' => ['name', 'category_name', 'description'],
-                'attributesForFaceting' => ['category_id', 'featured', 'filterOnly(stock)'],
+                'attributesForFaceting' => ['filterOnly(type)', 'filterOnly(category_id)', 'featured', 'filterOnly(stock)'],
                 'customRanking' => ['desc(featured)', 'asc(price)'],
             ]);
-            $this->info('Configured products index.');
-
-            $client->setSettings('categories', [
-                'searchableAttributes' => ['name'],
-            ]);
-            $this->info('Configured categories index.');
+            $this->info('Configured unified index: ' . AlgoliaService::indexName());
 
             return Command::SUCCESS;
         } catch (Throwable $e) {

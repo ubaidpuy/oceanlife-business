@@ -18,9 +18,9 @@ class CategoryObserver
             $client = AlgoliaService::client();
 
             if ($category->status) {
-                $client->saveObject('categories', $category->toAlgoliaArray());
+                $client->saveObject(AlgoliaService::indexName(), $category->toAlgoliaArray());
             } else {
-                $client->deleteObject('categories', (string) $category->id);
+                $client->deleteObject(AlgoliaService::indexName(), 'category_' . $category->id);
             }
         } catch (Throwable $e) {
             Log::error('Algolia category sync failed: ' . $e->getMessage());
@@ -33,7 +33,7 @@ class CategoryObserver
     public function deleted(Category $category): void
     {
         try {
-            AlgoliaService::client()->deleteObject('categories', (string) $category->id);
+            AlgoliaService::client()->deleteObject(AlgoliaService::indexName(), 'category_' . $category->id);
         } catch (Throwable $e) {
             Log::error('Algolia category sync failed: ' . $e->getMessage());
         }

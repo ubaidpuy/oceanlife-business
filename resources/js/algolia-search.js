@@ -1,42 +1,118 @@
-/*
-Add these meta tags to your Blade layout head:
-<meta name="algolia-app-id" content="{{ config('services.algolia.app_id') }}">
-<meta name="algolia-search-key" content="{{ config('services.algolia.search_key') }}">
-*/
+const debounceDelay = 400;
+const minimumQueryLength = 3;
 
-const appId = document.querySelector('meta[name="algolia-app-id"]')?.content;
-const searchKey = document.querySelector('meta[name="algolia-search-key"]')?.content;
-const input = document.querySelector('#search-input');
-const results = document.querySelector('#search-results');
-const placeholderImage = '/images/placeholder.png';
+const resultLink = (hit, kind, baseUrl) => {
+    const link = document.createElement('a');
+    link.href = `${baseUrl}/${encodeURIComponent(hit.slug)}`;
+    link.setAttribute('role', 'option');
+    link.className = 'flex items-center gap-3 rounded-xl px-3 py-2 transition hover:bg-ocean-primary/10 dark:hover:bg-gray-700';
 
-if (window.algoliasearch && appId && searchKey && input && results) {
-    const client = window.algoliasearch(appId, searchKey);
-    const productIndex = client.initIndex('products');
+    const image = document.createElement('img');
+    image.src = hit.image || '/favicon.ico';
+    image.alt = '';
+    image.className = 'h-11 w-11 shrink-0 rounded-lg object-cover bg-gray-100';
+    image.addEventListener('error', () => { image.src = '/favicon.ico'; }, { once: true });
+
+    const content = document.createElement('div');
+    content.className = 'min-w-0';
+
+    const name = document.createElement('p');
+    name.className = 'truncate text-sm font-semibold text-gray-900 dark:text-white';
+    name.textContent = hit.name || '';
+    content.append(name);
+
+    if (kind === 'product') {
+        const detail = document.createElement('p');
+        detail.className = 'truncate text-xs text-gray-500 dark:text-gray-400';
+        const price = hit.discount_price ?? hit.price;
+        detail.textContent = [hit.category_name, price != null ? `PKR ${Number(price).toLocaleString()}` : null]
+            .filter(Boolean)
+            .join(' · ');
+        content.append(detail);
+    }
+
+    link.append(image, content);
+    return link;
+};
+
+const addSection = (container, title, hits, kind, baseUrl) => {
+    if (!hits.length) return;
+
+    const section = document.createElement('section');
+    const heading = document.createElement('p');
+    heading.className = 'px-3 pb-1 pt-2 text-xs font-bold uppercase tracking-wider text-ocean-primary';
+    heading.textContent = title;
+    section.append(heading, ...hits.map((hit) => resultLink(hit, kind, baseUrl)));
+    container.append(section);
+};
+
+document.querySelectorAll('[data-unified-search]').forEach((form) => {
+    const input = form.querySelector('input[type="search"]');
+    const results = form.querySelector('[data-search-results]');
     let timeoutId;
+    let controller;
+
+    const close = () => {
+        results.classList.add('hidden');
+        input.setAttribute('aria-expanded', 'false');
+    };
+
+    const open = () => {
+        results.classList.remove('hidden');
+        input.setAttribute('aria-expanded', 'true');
+    };
 
     input.addEventListener('input', () => {
         clearTimeout(timeoutId);
+        controller?.abort();
+
+        const query = input.value.trim();
+        if (query.length < minimumQueryLength) {
+            results.replaceChildren();
+            close();
+            return;
+        }
 
         timeoutId = setTimeout(async () => {
-            const query = input.value.trim();
+            controller = new AbortController();
+            results.innerHTML = '<p class="px-3 py-4 text-center text-sm text-gray-500 dark:text-gray-400">Searching…</p>';
+            open();
 
-            if (! query) {
-                results.innerHTML = '';
-                return;
+            try {
+                const url = new URL(form.dataset.searchUrl, window.location.origin);
+                url.searchParams.set('q', query);
+                url.searchParams.set('per_page', '8');
+
+                const response = await fetch(url, {
+                    headers: { Accept: 'application/json' },
+                    signal: controller.signal,
+                });
+                if (!response.ok) throw new Error('Search request failed');
+
+                const data = await response.json();
+                results.replaceChildren();
+                addSection(results, 'Categories', data.categories || [], 'category', form.dataset.categoriesUrl);
+                addSection(results, 'Products', data.products || [], 'product', form.dataset.productsUrl);
+
+                if (!results.childElementCount) {
+                    results.innerHTML = '<p class="px-3 py-4 text-center text-sm text-gray-500 dark:text-gray-400">No matching categories or products.</p>';
+                }
+            } catch (error) {
+                if (error.name === 'AbortError') return;
+                results.innerHTML = '<p class="px-3 py-4 text-center text-sm text-red-600">Search is temporarily unavailable.</p>';
             }
-
-            const response = await productIndex.search(query);
-
-            results.innerHTML = response.hits.map((hit) => `
-                <article class="search-result">
-                    <img src="${hit.image || placeholderImage}" alt="${hit.name || 'Product image'}">
-                    <div>
-                        <h3>${hit.name || ''}</h3>
-                        <p>${hit.price ? `$${Number(hit.price).toFixed(2)}` : ''}</p>
-                    </div>
-                </article>
-            `).join('');
-        }, 300);
+        }, debounceDelay);
     });
-}
+
+    input.addEventListener('focus', () => {
+        if (results.childElementCount && input.value.trim().length >= minimumQueryLength) open();
+    });
+
+    form.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') close();
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!form.contains(event.target)) close();
+    });
+});
