@@ -49,6 +49,7 @@ const addSection = (container, title, hits, kind, baseUrl) => {
 document.querySelectorAll('[data-unified-search]').forEach((form) => {
     const input = form.querySelector('input[type="search"]');
     const results = form.querySelector('[data-search-results]');
+    const searchHint = form.querySelector('[data-search-hint]');
     let timeoutId;
     let controller;
 
@@ -83,11 +84,27 @@ document.querySelectorAll('[data-unified-search]').forEach((form) => {
         input.setAttribute('aria-expanded', 'true');
     };
 
+    const updateSearchHint = (queryLength) => {
+        const charactersRemaining = minimumQueryLength - queryLength;
+
+        if (charactersRemaining <= 0 || queryLength === 0) {
+            searchHint.textContent = '';
+            searchHint.classList.add('hidden');
+            searchHint.classList.remove('flex');
+            return;
+        }
+
+        searchHint.textContent = `${charactersRemaining} more ${charactersRemaining === 1 ? 'character' : 'characters'} to search`;
+        searchHint.classList.remove('hidden');
+        searchHint.classList.add('flex');
+    };
+
     input.addEventListener('input', () => {
         clearTimeout(timeoutId);
         controller?.abort();
 
         const query = input.value.trim();
+        updateSearchHint(query.length);
         if (query.length < minimumQueryLength) {
             results.replaceChildren();
             close();
@@ -124,6 +141,8 @@ document.querySelectorAll('[data-unified-search]').forEach((form) => {
             }
         }, debounceDelay);
     });
+
+    updateSearchHint(input.value.trim().length);
 
     input.addEventListener('focus', () => {
         if (results.childElementCount && input.value.trim().length >= minimumQueryLength) open();
