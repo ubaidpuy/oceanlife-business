@@ -55,18 +55,26 @@
                                             <x-currency :amount="$item['price']" />
                                         </td>
                                         <td class="px-6 py-4">
-                                            <form action="{{ route('shop.cart.update', $product->id) }}" method="POST" class="flex items-center gap-2">
+                                            <form action="{{ route('shop.cart.update', $product->id) }}" method="POST" class="inline-flex items-center rounded-xl border border-gray-200 bg-gray-50 p-1 shadow-sm dark:border-gray-700 dark:bg-gray-800">
                                                 @csrf
                                                 @method('PATCH')
-                                                <input
-                                                    type="number"
+                                                <button
+                                                    type="submit"
                                                     name="quantity"
-                                                    value="{{ $item['quantity'] }}"
-                                                    min="1"
-                                                    max="{{ $product->stock }}"
-                                                    class="input-field w-20 py-2 text-center"
-                                                >
-                                                <button type="submit" class="text-sm font-medium text-ocean-primary hover:text-ocean-dark">Update</button>
+                                                    value="{{ $item['quantity'] - 1 }}"
+                                                    aria-label="Decrease {{ $product->name }} quantity"
+                                                    class="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-lg font-bold text-gray-700 shadow-sm transition hover:bg-ocean-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-ocean-primary/30 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-gray-700 dark:text-white"
+                                                    {{ $item['quantity'] <= 1 ? 'disabled' : '' }}
+                                                >&minus;</button>
+                                                <span class="min-w-10 px-2 text-center text-sm font-bold text-gray-900 dark:text-white" aria-live="polite">{{ $item['quantity'] }}</span>
+                                                <button
+                                                    type="submit"
+                                                    name="quantity"
+                                                    value="{{ $item['quantity'] + 1 }}"
+                                                    aria-label="Increase {{ $product->name }} quantity"
+                                                    class="flex h-8 w-8 items-center justify-center rounded-lg bg-ocean-primary text-lg font-bold text-white shadow-sm transition hover:bg-ocean-dark focus:outline-none focus:ring-2 focus:ring-ocean-primary/30 disabled:cursor-not-allowed disabled:opacity-40"
+                                                    {{ $item['quantity'] >= $product->stock ? 'disabled' : '' }}
+                                                >+</button>
                                             </form>
                                         </td>
                                         <td class="px-6 py-4 text-sm font-semibold text-ocean-primary">
@@ -111,18 +119,26 @@
                                     </div>
                                 </div>
                                 <div class="mt-4 flex items-center justify-between">
-                                    <form action="{{ route('shop.cart.update', $product->id) }}" method="POST" class="flex items-center gap-2">
+                                    <form action="{{ route('shop.cart.update', $product->id) }}" method="POST" class="inline-flex items-center rounded-xl border border-gray-200 bg-gray-50 p-1 shadow-sm dark:border-gray-700 dark:bg-gray-800">
                                         @csrf
                                         @method('PATCH')
-                                        <input
-                                            type="number"
+                                        <button
+                                            type="submit"
                                             name="quantity"
-                                            value="{{ $item['quantity'] }}"
-                                            min="1"
-                                            max="{{ $product->stock }}"
-                                            class="input-field w-20 py-2 text-center"
-                                        >
-                                        <button type="submit" class="text-sm font-medium text-ocean-primary">Update</button>
+                                            value="{{ $item['quantity'] - 1 }}"
+                                            aria-label="Decrease {{ $product->name }} quantity"
+                                            class="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-xl font-bold text-gray-700 shadow-sm transition active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-gray-700 dark:text-white"
+                                            {{ $item['quantity'] <= 1 ? 'disabled' : '' }}
+                                        >&minus;</button>
+                                        <span class="min-w-11 px-2 text-center font-bold text-gray-900 dark:text-white" aria-live="polite">{{ $item['quantity'] }}</span>
+                                        <button
+                                            type="submit"
+                                            name="quantity"
+                                            value="{{ $item['quantity'] + 1 }}"
+                                            aria-label="Increase {{ $product->name }} quantity"
+                                            class="flex h-9 w-9 items-center justify-center rounded-lg bg-ocean-primary text-xl font-bold text-white shadow-sm transition active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
+                                            {{ $item['quantity'] >= $product->stock ? 'disabled' : '' }}
+                                        >+</button>
                                     </form>
                                     <form action="{{ route('shop.cart.remove', $product->id) }}" method="POST">
                                         @csrf

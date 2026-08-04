@@ -7,6 +7,7 @@
     @php
         $colorMap = [
             'yellow' => 'bg-yellow-100 text-yellow-800',
+            'orange' => 'bg-orange-100 text-orange-800',
             'blue' => 'bg-blue-100 text-blue-800',
             'indigo' => 'bg-indigo-100 text-indigo-800',
             'green' => 'bg-green-100 text-green-800',
@@ -91,6 +92,13 @@
                     <p class="text-sm text-gray-600">{{ $order->notes }}</p>
                 </div>
             @endif
+
+            @if($order->status === 'payment_verification_pending')
+                <div class="rounded-2xl border border-orange-300 bg-orange-50 p-6">
+                    <h2 class="font-semibold text-orange-900">Payment verification required</h2>
+                    <p class="mt-2 text-sm text-orange-800">Confirm this order only after verifying the customer's payment screenshot received on WhatsApp.</p>
+                </div>
+            @endif
         </div>
 
         <div class="space-y-6">
@@ -130,6 +138,10 @@
                     <div>
                         <dt class="font-medium text-gray-500">Placed On</dt>
                         <dd class="text-gray-900">{{ $order->created_at->format('M d, Y H:i') }}</dd>
+                    </div>
+                    <div>
+                        <dt class="font-medium text-gray-500">Payment Method</dt>
+                        <dd class="text-gray-900">{{ $order->payment_method_label }}</dd>
                     </div>
                     <div>
                         <dt class="font-medium text-gray-500">Items</dt>

@@ -29,7 +29,7 @@
                     <div class="relative">
                         <input type="search" name="search" value="{{ request('search') }}" placeholder="Search for product & categories" autocomplete="off" aria-label="Search products and categories" aria-autocomplete="list" aria-expanded="false" class="w-full rounded-full border border-gray-200 bg-gray-50 py-2 pl-9 pr-3 text-sm focus:border-ocean-primary focus:outline-none focus:ring-2 focus:ring-ocean-primary/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white md:w-40">
                         <svg class="absolute left-3 top-2.5 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        <span data-search-hint class="pointer-events-none absolute inset-y-0 right-3 hidden items-center bg-gray-50 pl-1 text-[10px] text-gray-500 dark:bg-gray-800 dark:text-gray-400" aria-live="polite"></span>
+                        <span data-search-hint class="pointer-events-none absolute inset-y-0 right-9 hidden items-center whitespace-nowrap text-[10px] font-medium text-gray-950 dark:text-white" aria-live="polite"></span>
                     </div>
                     <div data-search-results role="listbox" class="fixed z-[100] hidden max-h-[60vh] overflow-y-auto overscroll-contain rounded-2xl border border-gray-100 bg-white p-2 shadow-2xl dark:border-gray-700 dark:bg-gray-800"></div>
                 </form>
@@ -38,7 +38,7 @@
                     <div class="relative">
                         <input type="search" name="search" value="{{ request('search') }}" placeholder="Search products & categories..." autocomplete="off" aria-label="Search products and categories" aria-autocomplete="list" aria-expanded="false" class="w-48 rounded-full border border-gray-200 bg-gray-50 py-2 pl-10 pr-4 text-sm focus:border-ocean-primary focus:outline-none focus:ring-2 focus:ring-ocean-primary/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white xl:w-64">
                         <svg class="absolute left-3 top-2.5 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        <span data-search-hint class="pointer-events-none absolute inset-y-0 right-3 hidden items-center bg-gray-50 pl-1 text-[10px] text-gray-500 dark:bg-gray-800 dark:text-gray-400" aria-live="polite"></span>
+                        <span data-search-hint class="pointer-events-none absolute inset-y-0 right-9 hidden items-center whitespace-nowrap text-[10px] font-medium text-gray-950 dark:text-white" aria-live="polite"></span>
                     </div>
                     <div data-search-results role="listbox" class="fixed z-[100] hidden max-h-[65vh] overflow-y-auto overscroll-contain rounded-2xl border border-gray-100 bg-white p-2 shadow-2xl dark:border-gray-700 dark:bg-gray-800"></div>
                 </form>

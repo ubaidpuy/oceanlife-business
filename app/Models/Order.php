@@ -10,8 +10,14 @@ class Order extends Model
 {
     use HasFactory;
 
+    public const PAYMENT_METHODS = [
+        'cash_on_delivery' => 'Cash on Delivery',
+        'bank_or_jazzcash' => 'Bank / JazzCash Payment',
+    ];
+
     public const STATUSES = [
         'pending' => 'Pending',
+        'payment_verification_pending' => 'Payment Verification Pending',
         'confirmed' => 'Confirmed',
         'shipped' => 'Shipped',
         'delivered' => 'Delivered',
@@ -29,6 +35,7 @@ class Order extends Model
         'postal_code',
         'country',
         'notes',
+        'payment_method',
         'subtotal',
         'shipping_total',
         'grand_total',
@@ -54,10 +61,16 @@ class Order extends Model
         return self::STATUSES[$this->status] ?? ucfirst($this->status);
     }
 
+    public function getPaymentMethodLabelAttribute(): string
+    {
+        return self::PAYMENT_METHODS[$this->payment_method] ?? ucfirst(str_replace('_', ' ', $this->payment_method));
+    }
+
     public function getStatusColorAttribute(): string
     {
         return match ($this->status) {
             'pending' => 'yellow',
+            'payment_verification_pending' => 'orange',
             'confirmed' => 'blue',
             'shipped' => 'indigo',
             'delivered' => 'green',

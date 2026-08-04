@@ -98,7 +98,7 @@ class CartService
                 'price' => $price,
                 'shipping_charge' => $shipping,
                 'subtotal' => $price * $quantity,
-                'shipping_subtotal' => $shipping * $quantity,
+                'shipping_subtotal' => $shipping,
             ];
         })->filter()->values();
     }
@@ -110,7 +110,10 @@ class CartService
 
     public function shippingTotal(): float
     {
-        return (float) $this->getLineItems()->sum('shipping_subtotal');
+        // Shipping is charged once per order, regardless of the number of
+        // products or quantities in the cart. When products have different
+        // shipping rates, use the highest applicable rate.
+        return (float) $this->getLineItems()->max('shipping_charge');
     }
 
     public function grandTotal(): float

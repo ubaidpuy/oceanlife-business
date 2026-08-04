@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Shop;
 
+use App\Models\Order;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CheckoutRequest extends FormRequest
 {
@@ -23,6 +25,7 @@ class CheckoutRequest extends FormRequest
             'postal_code' => ['required', 'string', 'max:20'],
             'country' => ['required', 'string', 'max:100'],
             'notes' => ['nullable', 'string', 'max:1000'],
+            'payment_method' => ['required', Rule::in(array_keys(Order::PAYMENT_METHODS))],
         ];
     }
 }

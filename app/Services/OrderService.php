@@ -35,10 +35,13 @@ class OrderService
                 'postal_code' => $customerData['postal_code'],
                 'country' => $customerData['country'],
                 'notes' => $customerData['notes'] ?? null,
+                'payment_method' => $customerData['payment_method'],
                 'subtotal' => $subtotal,
                 'shipping_total' => $shippingTotal,
                 'grand_total' => $subtotal + $shippingTotal,
-                'status' => 'pending',
+                'status' => $customerData['payment_method'] === 'bank_or_jazzcash'
+                    ? 'payment_verification_pending'
+                    : 'pending',
             ]);
 
             foreach ($lineItems as $line) {

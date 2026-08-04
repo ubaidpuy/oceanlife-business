@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shop\CheckoutRequest;
+use App\Models\Order;
 use App\Services\CartService;
 use App\Services\OrderService;
 use Illuminate\Http\RedirectResponse;
@@ -44,11 +45,15 @@ class CheckoutController extends Controller
             return back()->with('error', $e->getMessage());
         }
 
+        $message = $order->payment_method === 'bank_or_jazzcash'
+            ? 'Order received. Please send your payment screenshot on WhatsApp for verification.'
+            : 'Order placed successfully!';
+
         return redirect()->route('shop.checkout.success', $order)
-            ->with('success', 'Order placed successfully!');
+            ->with('success', $message);
     }
 
-    public function success(\App\Models\Order $order): View
+    public function success(Order $order): View
     {
         $order->load('items');
 
