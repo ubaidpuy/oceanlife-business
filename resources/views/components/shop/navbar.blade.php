@@ -3,7 +3,7 @@
     $navbarCategories = \App\Models\Category::active()->orderBy('name')->get();
 @endphp
 
-<nav class="sticky top-0 z-40 border-b border-gray-100 bg-white/95 backdrop-blur-md dark:border-gray-800 dark:bg-gray-900/95">
+<nav class="relative z-40 border-b border-gray-100 bg-white/95 backdrop-blur-md dark:border-gray-800 dark:bg-gray-900/95">
     <div class="w-full px-4 sm:px-6 lg:px-8">
         <div class="flex h-20 items-center justify-between gap-2 lg:grid lg:h-24 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-0">
             <a href="{{ route('shop.home') }}" class="flex min-w-0 shrink-0 items-center gap-3 lg:justify-self-start" aria-label="{{ $shopSettings->shop_name }} home">

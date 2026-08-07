@@ -16,7 +16,10 @@
     @stack('styles')
 </head>
 <body class="min-h-screen bg-gray-50 font-sans antialiased dark:bg-gray-900">
-    @include('components.shop.navbar')
+    <div class="sticky top-0 z-50">
+        @include('components.shop.announcement-banner')
+        @include('components.shop.navbar')
+    </div>
 
     <main>
         @include('components.flash-messages')
